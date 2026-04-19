@@ -6,9 +6,41 @@
   <title>The Hart Protocol — Infrastructure, Equity & Local Return</title>
   <meta name="description" content="A magazine-paced editorial version of The Hart Protocol." />
   <meta name="author" content="Bart Salazar" />
-  <meta property="article:author" content="Bart Salazar" />
-  <meta name="creator" content="Bart Salazar" />
-  <meta name="theme-color" content="#0b0916" />
+<meta name="creator" content="Bart Salazar" />
+<meta property="article:author" content="Bart Salazar" />
+
+<meta property="og:title" content="The Hart Protocol — Infrastructure, Equity & Local Return" />
+<meta property="og:description" content="A magazine-paced editorial on data center governance, infrastructure equity, and community leverage by Bart Salazar." />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="The Hart Protocol" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="The Hart Protocol — Infrastructure, Equity & Local Return" />
+<meta name="twitter:description" content="A magazine-paced editorial on data center governance, infrastructure equity, and community leverage by Bart Salazar." />
+<meta name="twitter:label1" content="Written by" />
+<meta name="twitter:data1" content="Bart Salazar" />
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "The Hart Protocol — Infrastructure, Equity & Local Return",
+  "author": {
+    "@type": "Person",
+    "name": "Bart Salazar"
+  },
+  "creator": {
+    "@type": "Person",
+    "name": "Bart Salazar"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "The Hart Protocol"
+  },
+  "description": "A magazine-paced editorial on data center governance, infrastructure equity, and community-centered infrastructure policy.",
+  "inLanguage": "en"
+}
+</script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
@@ -138,18 +170,27 @@
     .eyebrow,
     .kicker,
     .section-label,
-    .byline {
-      font-family:var(--mono);
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      font-size:.68rem;
-      color:var(--cyan);
-    }
+    .byline{
+  margin: 0 0 18px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  font-size: .72rem;
+  color: var(--soft);
+}
 
-    .byline {
-      margin-bottom: 12px;
-      font-size: 0.72rem;
-    }
+.colophon-copy{
+  margin:12px 0 0;
+  color:var(--muted);
+  line-height:1.8;
+  font-size:.98rem;
+  font-weight:300;
+}
+
+.colophon-copy strong{
+  color:var(--text);
+  font-weight:700;
+}
 
     .brand strong{
       display:block;
@@ -588,6 +629,22 @@
       outline:none;
     }
 
+    <section class="section" id="colophon">
+  <div class="section-head reveal">
+    <div class="section-label">Colophon</div>
+    <h2>Authorship, <em>stated plainly</em>.</h2>
+  </div>
+
+  <div class="sources glass reveal">
+    <p class="colophon-copy">
+      <strong>Written by Bart Salazar</strong><br>
+      The Hart Protocol is a civic-policy editorial framework exploring data center governance,
+      infrastructure equity, sustainability mandates, and community-centered leverage in the age
+      of hyperscale digital infrastructure.
+    </p>
+  </div>
+</section>
+    
     .footer{
       padding:36px 0 64px;
       font-family:var(--mono);
@@ -675,6 +732,7 @@
         <article class="hero-main glass reveal">
           <div class="byline">A civic editorial by Bart Salazar</div>
           <div class="issue">Editorial Edition · Social Contract of Compute</div>
+          <div class="byline">A civic editorial by Bart Salazar</div>
           <h1>THE CLOUD<br />LOOKS<br /><em>DIFFERENT</em><br />WHEN IT LANDS.</h1>
           <p class="hero-deck">
             The average user meets the digital world as convenience. A local host community meets it as substations, water demand, zoning fights, diesel backup, tax policy, and the strange civic requirement to remain grateful while somebody else’s balance sheet becomes physically visible.
@@ -950,8 +1008,8 @@
     </section>
 
     <footer class="footer reveal">
-      The Hart Protocol · Infrastructure, Equity & Local Return · conceived, written, and shaped by Bart Salazar.
-    </footer>
+  The Hart Protocol · Infrastructure, Equity & Local Return · conceived, written, and shaped by Bart Salazar.
+</footer>
   </main>
 
   <script>
