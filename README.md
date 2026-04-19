@@ -1,10 +1,11 @@
 # The Hart Protocol
 
 **Infrastructure, Equity & Local Return**  
-A magazine-paced civic editorial by **Bart Salazar**
+*A magazine-paced civic editorial by **Bart Salazar***
+
+![Preview of The Hart Protocol](./preview.jpg)
 
 > The cloud looks different when it lands.
-
 ---
 
 ## Live Site
