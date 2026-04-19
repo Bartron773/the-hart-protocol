@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Hart Protocol — Infrastructure, Equity & Local Return</title>
+  <meta name="description" content="A magazine-paced editorial version of The Hart Protocol." />
+  <meta name="author" content="Bart Salazar" />
+  <meta property="article:author" content="Bart Salazar" />
+  <meta name="creator" content="Bart Salazar" />
+  <meta name="theme-color" content="#0b0916" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --deep:#0b0916;
+      --void:#110d1f;
+      --purple-dark:#1e1535;
+      --mauve:#7d5e8a;
+      --blush:#c4a0b4;
+      --rose:#d4b4bc;
+      --lavender:#b4a8d4;
+      --cyan:#5bcfef;
+      --white:#ffffff;
+      --ink:rgba(255,255,255,.94);
+      --muted:rgba(255,255,255,.68);
+      --soft:rgba(255,255,255,.46);
+      --glass-mauve:rgba(160,120,180,.12);
+      --glass-border:rgba(255,255,255,.16);
+      --glass-shine:rgba(255,255,255,.22);
+      --glass-shadow:0 24px 64px rgba(0,0,0,.48), 0 4px 16px rgba(0,0,0,.3);
+      --max:1240px;
+      --display:'Playfair Display', Georgia, serif;
+      --body:'DM Sans', ui-sans-serif, system-ui, sans-serif;
+      --mono:'Fira Code', monospace;
+
+      /* legacy mapping for original layout */
+      --bg:var(--deep);
+      --bg2:var(--void);
+      --panel:var(--glass-mauve);
+      --panel-strong:rgba(255,255,255,.14);
+      --border:var(--glass-border);
+      --text:var(--ink);
+      --lav:var(--lavender);
+      --shadow:var(--glass-shadow);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--body);
+      background: var(--deep);
+      color:var(--text);
+      overflow-x:hidden;
+      letter-spacing:.01em;
+    }
+
+    /* Atmospheric orbs */
+    .scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .orb { position: absolute; border-radius: 50%; filter: blur(70px); }
+    .orb-1 {
+      width: 900px; height: 900px;
+      background: radial-gradient(circle at 30% 30%, rgba(125,94,138,.5), transparent 60%);
+      top: -220px; left: -180px;
+      animation: drift1 24s ease-in-out infinite alternate;
+    }
+    .orb-2 {
+      width: 720px; height: 720px;
+      background: radial-gradient(circle at 70% 40%, rgba(180,168,212,.38), transparent 62%);
+      top: 8%; right: -220px;
+      animation: drift2 28s ease-in-out infinite alternate;
+    }
+    .orb-3 {
+      width: 640px; height: 640px;
+      background: radial-gradient(circle at 50% 50%, rgba(91,207,239,.28), transparent 60%);
+      bottom: -180px; left: 18%;
+      animation: drift3 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes drift1 {
+      from { transform: translate3d(0,0,0) scale(1); }
+      to { transform: translate3d(30px, -18px, 0) scale(1.05); }
+    }
+    @keyframes drift2 {
+      from { transform: translate3d(0,0,0) scale(1); }
+      to { transform: translate3d(-28px, 20px, 0) scale(1.04); }
+    }
+    @keyframes drift3 {
+      from { transform: translate3d(0,0,0) scale(1); }
+      to { transform: translate3d(22px, -22px, 0) scale(1.06); }
+    }
+
+    /* Film Grain Overlay */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.05;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode:screen;
+      z-index:1;
+    }
+
+    a{color:inherit;text-decoration:none}
+    .wrap{width:min(var(--max), calc(100% - 36px)); margin:0 auto; position:relative; z-index:2}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:40;
+      padding:12px 0;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 18px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:linear-gradient(145deg, rgba(255,255,255,.10), var(--glass-mauve));
+      box-shadow:var(--shadow), inset 0 1px 0 var(--glass-shine);
+    }
+
+    .brand small,
+    .eyebrow,
+    .kicker,
+    .section-label,
+    .byline {
+      font-family:var(--mono);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.68rem;
+      color:var(--cyan);
+    }
+
+    .byline {
+      margin-bottom: 12px;
+      font-size: 0.72rem;
+    }
+
+    .brand strong{
+      display:block;
+      font-family:var(--display);
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:1rem;
+      color:var(--text);
+    }
+
+    .nav-links{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .nav-links a{
+      color:var(--muted);
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid transparent;
+      transition:.2s ease;
+      font-size:.88rem;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible{
+      color:var(--text);
+      border-color:rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      outline:none;
+    }
+
+    .hero{
+      padding:42px 0 22px;
+      min-height:88vh;
+      display:grid;
+      align-items:end;
+    }
+
+    .hero-shell{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:22px;
+      align-items:stretch;
+    }
+
+    .glass{
+      position:relative;
+      background:linear-gradient(160deg, var(--glass-mauve), rgba(255,255,255,.05));
+      border:1px solid var(--border);
+      box-shadow:var(--shadow), inset 0 1px 0 var(--glass-shine);
+      backdrop-filter:blur(28px) saturate(145%);
+      -webkit-backdrop-filter:blur(28px) saturate(145%);
+      overflow:hidden;
+    }
+
+    .glass::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:radial-gradient(ellipse at top left, rgba(255,255,255,.12), transparent 40%);
+    }
+
+    .hero-main{
+      border-radius:34px;
+      padding:48px;
+      min-height:65vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+    }
+
+    .issue{
+      font-family:var(--mono);
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-size:.7rem;
+      color:var(--cyan);
+      margin-bottom:20px;
+    }
+
+    h1{
+      margin:0 0 20px;
+      font-family:var(--display);
+      font-size:clamp(3.8rem, 9vw, 8.6rem);
+      line-height:.84;
+      letter-spacing:-.06em;
+      font-weight:900;
+    }
+
+    h1 em{
+      font-style:italic;
+      font-weight:400;
+      color:var(--blush);
+    }
+
+    .hero-deck{
+      max-width:32ch;
+      margin:0;
+      color:var(--muted);
+      font-size:1.08rem;
+      line-height:1.82;
+      font-weight:300;
+    }
+
+    .hero-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:18px;
+      margin-top:24px;
+      font-family:var(--mono);
+      color:var(--soft);
+      font-size:.72rem;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+    }
+
+    .hero-side{
+      display:grid;
+      gap:16px;
+    }
+
+    .side-card{
+      border-radius:24px;
+      padding:28px;
+      min-height:220px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .side-card .big{
+      font-family:var(--display);
+      font-size:1.72rem;
+      line-height:1.08;
+      letter-spacing:-.035em;
+      margin:0;
+    }
+
+    .side-card p{
+      margin:14px 0 0;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:.96rem;
+      font-weight:300;
+    }
+
+    .section{
+      padding:48px 0 8px;
+    }
+
+    .intro-grid,
+    .split,
+    .triple{
+      display:grid;
+      gap:18px;
+    }
+
+    .intro-grid{grid-template-columns:.92fr 1.08fr}
+    .split{grid-template-columns:1fr 1fr}
+    .triple{grid-template-columns:repeat(3,1fr)}
+
+    .pull{
+      border-radius:28px;
+      padding:38px 34px;
+      background:linear-gradient(180deg, rgba(17,13,31,.72), rgba(11,9,22,.6));
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .pull::before{
+      content:"“";
+      position:absolute;
+      top:-14px;
+      left:18px;
+      font-family:var(--display);
+      font-size:10rem;
+      color:rgba(196,160,180,.15);
+      line-height:1;
+    }
+
+    .pull .quote{
+      position:relative;
+      margin:0;
+      font-family:var(--display);
+      font-style:italic;
+      font-size:clamp(1.6rem, 2.8vw, 2.8rem);
+      line-height:1.08;
+      letter-spacing:-.04em;
+      max-width:14ch;
+    }
+
+    .pull .quote em{
+      font-style:normal;
+      color:var(--cyan);
+    }
+
+    .section-head{
+      padding:0 0 8px;
+      max-width:70ch;
+    }
+
+    h2{
+      margin:10px 0 0;
+      font-family:var(--display);
+      font-size:clamp(2.4rem, 4.4vw, 5rem);
+      line-height:.95;
+      letter-spacing:-.05em;
+      font-weight:700;
+    }
+
+    h2 em{
+      font-style:italic;
+      font-weight:400;
+      color:var(--blush);
+    }
+
+    .sub{
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.85;
+      font-weight:300;
+      margin:16px 0 0;
+      max-width:62ch;
+    }
+
+    .feature{
+      border-radius:28px;
+      padding:30px;
+    }
+
+    .feature h3,
+    .metric h3,
+    .essay h3{
+      margin:0 0 12px;
+      font-family:var(--display);
+      font-size:1.34rem;
+      letter-spacing:-.025em;
+      font-weight:700;
+    }
+
+    .feature p,
+    .metric p,
+    .essay p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.82;
+      font-weight:300;
+      font-size:.98rem;
+    }
+
+    .metric{
+      border-radius:24px;
+      padding:28px;
+      min-height:240px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+    }
+
+    .num{
+      font-family:var(--display);
+      font-size:clamp(2.6rem, 5vw, 4.2rem);
+      line-height:.92;
+      letter-spacing:-.06em;
+      margin:8px 0 12px;
+      background: linear-gradient(to bottom, #fff, var(--soft));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .num small{
+      display:block;
+      margin-top:10px;
+      font-family:var(--mono);
+      font-size:.7rem;
+      text-transform:uppercase;
+      letter-spacing:.16em;
+      color:var(--soft);
+      -webkit-text-fill-color: var(--soft);
+    }
+
+    .runway{
+      border-radius:30px;
+      padding:32px;
+      margin-top:18px;
+    }
+
+    .runway-list{
+      display:grid;
+      gap:0;
+    }
+
+    .runway-item{
+      display:grid;
+      grid-template-columns:58px 1fr;
+      gap:16px;
+      padding:18px 0;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      transition: background 0.3s ease;
+    }
+
+    .runway-item:hover{
+      background: rgba(255,255,255,0.03);
+    }
+
+    .runway-item:last-child{border-bottom:none}
+    .runway-no{
+      font-family:var(--mono);
+      color:var(--cyan);
+      font-size:.78rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      padding-top:4px;
+    }
+
+    .runway-item h4{
+      margin:0 0 6px;
+      font-family:var(--display);
+      font-size:1.14rem;
+      font-weight:700;
+      letter-spacing:-.02em;
+    }
+
+    .runway-item p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.74;
+      font-weight:300;
+    }
+
+    .full-bleed{
+      padding:60px 0 18px;
+    }
+
+    .marquee{
+      border-radius:34px;
+      padding:46px;
+      min-height:52vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      background:
+        linear-gradient(180deg, var(--glass-mauve), rgba(255,255,255,.03)),
+        radial-gradient(circle at 20% 20%, rgba(91,207,239,.08), transparent 35%),
+        radial-gradient(circle at 80% 60%, rgba(212,180,188,.09), transparent 40%);
+      border:1px solid var(--border);
+      box-shadow:var(--shadow), inset 0 1px 0 var(--glass-shine);
+    }
+
+    .marquee .statement{
+      margin:12px 0 0;
+      max-width:20ch;
+      font-family:var(--display);
+      font-style:italic;
+      font-size:clamp(2rem, 4vw, 4.4rem);
+      line-height:1.02;
+      letter-spacing:-.05em;
+    }
+
+    .marquee .statement em{
+      font-style:normal;
+      color:var(--cyan);
+    }
+
+    .table-card{
+      border-radius:28px;
+      overflow:hidden;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.95rem;
+    }
+
+    th, td{
+      padding:16px 18px;
+      border-bottom:1px solid rgba(255,255,255,.07);
+      text-align:left;
+      vertical-align:top;
+    }
+
+    th{
+      font-family:var(--mono);
+      text-transform:uppercase;
+      letter-spacing:.14em;
+      font-size:.7rem;
+      color:var(--soft);
+      background:rgba(255,255,255,.03);
+    }
+
+    td{color:var(--muted)}
+    tr:last-child td{border-bottom:none}
+
+    .essay{
+      border-radius:28px;
+      padding:34px;
+    }
+
+    .essay p + p{margin-top:14px}
+
+    .sources{
+      border-radius:28px;
+      padding:28px 30px;
+    }
+
+    .sources ol{
+      margin:0;
+      padding-left:22px;
+    }
+
+    .sources li{
+      color:var(--muted);
+      line-height:1.78;
+      margin-bottom:8px;
+    }
+
+    .sources a{
+      text-decoration:underline;
+      text-decoration-color:rgba(255,255,255,.2);
+      text-underline-offset:3px;
+      transition: color 0.2s;
+    }
+
+    .sources a:hover,
+    .sources a:focus-visible {
+      color: var(--cyan);
+      outline:none;
+    }
+
+    .footer{
+      padding:36px 0 64px;
+      font-family:var(--mono);
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:.72rem;
+      color:var(--soft);
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(26px);
+      transition:opacity .8s cubic-bezier(.22,1,.36,1), transform .8s cubic-bezier(.22,1,.36,1);
+    }
+    .reveal.visible{opacity:1; transform:none}
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .orb-1, .orb-2, .orb-3, .reveal { animation:none !important; transition:none !important; }
+      .reveal { opacity:1; transform:none; }
+    }
+
+    @media (max-width: 980px){
+      .hero-shell,
+      .intro-grid,
+      .split,
+      .triple{grid-template-columns:1fr}
+      .hero{min-height:auto}
+      .hero-main{min-height:auto}
+      .nav{border-radius:24px; align-items:flex-start; flex-direction:column}
+    }
+
+    @media (max-width: 640px){
+      .hero-main,
+      .side-card,
+      .feature,
+      .metric,
+      .runway,
+      .marquee,
+      .essay,
+      .sources,
+      .pull{padding:24px}
+      h1{font-size:3.7rem}
+      .runway-item{grid-template-columns:40px 1fr}
+      th, td{padding:14px}
+    }
+
+    @media print {
+      .scene, body::before, .topbar { display:none; }
+      body { background:#0b0916; }
+      .wrap { width:100%; }
+      .glass, .pull, .marquee { backdrop-filter:none; -webkit-backdrop-filter:none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scene" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <div class="topbar">
+    <div class="wrap">
+      <nav class="nav glass" aria-label="Primary">
+        <div class="brand">
+          <small>Infrastructure, Equity &amp; Local Return</small>
+          <strong>The Hart Protocol</strong>
+        </div>
+        <div class="nav-links">
+          <a href="#opening">Opening</a>
+          <a href="#numbers">Numbers</a>
+          <a href="#deal">The Deal</a>
+          <a href="#exit">Exit</a>
+          <a href="#neighbors">Neighbors</a>
+          <a href="#sources">Sources</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="hero" id="opening">
+      <div class="hero-shell">
+        <article class="hero-main glass reveal">
+          <div class="byline">A civic editorial by Bart Salazar</div>
+          <div class="issue">Editorial Edition · Social Contract of Compute</div>
+          <h1>THE CLOUD<br />LOOKS<br /><em>DIFFERENT</em><br />WHEN IT LANDS.</h1>
+          <p class="hero-deck">
+            The average user meets the digital world as convenience. A local host community meets it as substations, water demand, zoning fights, diesel backup, tax policy, and the strange civic requirement to remain grateful while somebody else’s balance sheet becomes physically visible.
+          </p>
+          <div class="hero-meta">
+            <span>Magazine pacing</span>
+            <span>Policy argument</span>
+            <span>Community leverage</span>
+          </div>
+        </article>
+
+        <aside class="hero-side">
+          <div class="side-card glass reveal">
+            <div class="eyebrow">Premise</div>
+            <p class="big">Not anti-tech. Not anti-future. Anti-extraction without participation.</p>
+            <p>If towns are being asked to host the machinery of digital life, they deserve more than ceremonial talking points and landscaping renderings.</p>
+          </div>
+          <div class="side-card glass reveal">
+            <div class="eyebrow">Mood shift</div>
+            <p class="big">The old growth story is starting to crack.</p>
+            <p>Communities that once welcomed data centers as neat tax engines are now asking more pointed questions about resource strain, secrecy, and permanent land tradeoffs.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="intro-grid">
+        <div class="pull reveal">
+          <p class="quote">The future should not require <em>local silence</em> in order to be built.</p>
+        </div>
+        <div class="section-head reveal">
+          <div class="section-label">Opening argument</div>
+          <h2>This is no longer a niche facilities story. It is a story about <em>power</em>.</h2>
+          <p class="sub">
+            Data centers are becoming the industrial backbone of artificial intelligence, cloud storage, streaming, logistics, finance, health systems, and ordinary everyday life. That makes them less like anonymous warehouses and more like a new class of utility infrastructure. The political question is not whether they exist. The political question is who gets protected, who gets paid, who gets informed, and who gets left holding the consequences.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="numbers">
+      <div class="section-head reveal">
+        <div class="section-label">The numbers</div>
+        <h2>The figures that make the mood turn into <em>policy</em>.</h2>
+        <p class="sub">
+          A better public case needs hard numbers, not just resentment. These figures give the argument weight without flattening it.
+        </p>
+      </div>
+
+      <div class="triple">
+        <article class="metric glass reveal">
+          <div class="kicker">Virginia economy</div>
+          <div class="num">$9.1B<small>estimated annual GDP contribution</small></div>
+          <p>Virginia’s data center economy is massive, and that scale explains why the sector has enjoyed intense political protection. But macroeconomic benefit does not erase micro-level friction.</p>
+        </article>
+
+        <article class="metric glass reveal">
+          <div class="kicker">Political warning</div>
+          <div class="num">69% → 35%<small>support for new local facilities</small></div>
+          <p>Recent polling in Virginia shows a dramatic drop in support for new local data centers. That kind of sentiment shift is not noise. It is a warning shot.</p>
+        </article>
+
+        <article class="metric glass reveal">
+          <div class="kicker">Efficiency benchmark</div>
+          <div class="num">PUE &lt; 1.3<small>serious modern target</small></div>
+          <p>Any project presented as future-facing should be required to hit measurable standards on power, water, noise, emissions, and cooling efficiency.</p>
+        </article>
+      </div>
+
+      <div class="split" style="margin-top:18px;">
+        <article class="feature glass reveal">
+          <h3>The employment paradox</h3>
+          <p>
+            The build phase is where the labor story looks strongest. Construction can be intensive, local suppliers can benefit, and politicians can point to movement on paper. The operating phase is far thinner. Large campuses can run with a surprisingly small permanent workforce. That means communities often absorb a very long physical footprint in exchange for a relatively narrow long-term employment base.
+          </p>
+        </article>
+
+        <div class="table-card glass reveal">
+          <table>
+            <thead>
+              <tr>
+                <th>Condition</th>
+                <th>Mature market</th>
+                <th>Emerging market</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Local sentiment</td>
+                <td>Often declining as cumulative impacts become visible</td>
+                <td>Sometimes more positive early due to growth needs</td>
+              </tr>
+              <tr>
+                <td>Main appeal</td>
+                <td>Tax base and political prestige</td>
+                <td>Construction spending and symbolic investment</td>
+              </tr>
+              <tr>
+                <td>Main risk</td>
+                <td>Grid, land, and quality-of-life strain</td>
+                <td>Weak bargaining leverage and overly generous incentives</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="full-bleed">
+      <div class="marquee reveal">
+        <div class="section-label">Central thesis</div>
+        <p class="statement">If the digital economy needs our land, our water, our roads, our substations, and our patience, then it can meet us at the level of <em>a real deal</em>.</p>
+      </div>
+    </section>
+
+    <section class="section" id="deal">
+      <div class="section-head reveal">
+        <div class="section-label">The smarter deal</div>
+        <h2>Replace the stale yes-or-no fight with a sharper question: under <em>what terms</em>?</h2>
+        <p class="sub">
+          Once the conversation moves away from “pro-growth versus anti-growth,” the structure gets much more interesting. A town can support infrastructure and still insist on a radically better contract.
+        </p>
+      </div>
+
+      <article class="runway glass reveal">
+        <div class="runway-list">
+          <div class="runway-item">
+            <div class="runway-no">01</div>
+            <div>
+              <h4>Visible public return</h4>
+              <p>Residents should feel the value locally through utility relief, tax stabilization, trust funds, school upgrades, emergency services support, or civic capital investments that are impossible to miss.</p>
+            </div>
+          </div>
+          <div class="runway-item">
+            <div class="runway-no">02</div>
+            <div>
+              <h4>Resource transparency</h4>
+              <p>Projects should disclose electricity demand, cooling approach, backup generation, water intensity, and major infrastructure dependencies in public-facing form.</p>
+            </div>
+          </div>
+          <div class="runway-item">
+            <div class="runway-no">03</div>
+            <div>
+              <h4>Developer-funded upgrades</h4>
+              <p>If the project creates the burden, the project should fund the response: substations, transmission, water infrastructure, road improvements, noise mitigation, and emergency planning.</p>
+            </div>
+          </div>
+          <div class="runway-item">
+            <div class="runway-no">04</div>
+            <div>
+              <h4>Hard performance thresholds</h4>
+              <p>Require specific targets for PUE, WUE, emissions, sound, waste heat strategy, and resilience. Sustainability without thresholds is just expensive perfume.</p>
+            </div>
+          </div>
+          <div class="runway-item">
+            <div class="runway-no">05</div>
+            <div>
+              <h4>Binding Community Benefit Agreements</h4>
+              <p>Not symbolic “benefit plans.” Real contracts with audits, cure periods, enforcement rights, public reporting, and obligations that survive ownership changes.</p>
+            </div>
+          </div>
+          <div class="runway-item">
+            <div class="runway-no">06</div>
+            <div>
+              <h4>Renegotiation and expansion triggers</h4>
+              <p>If a campus expands, increases load, changes cooling systems, or shifts ownership, the agreement should reopen automatically. Towns should not be trapped inside yesterday’s deal.</p>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="split">
+        <article class="essay glass reveal">
+          <div class="section-label">Governance</div>
+          <h3>What a serious CBA should actually do</h3>
+          <p>
+            A Community Benefit Agreement should function as more than a political peace offering. It should be a legal instrument that translates local anxieties into operational terms: water caps, quiet-hour protections, sound attenuation, emergency coordination, independent audits, apprenticeship pathways, and scheduled public reporting. The goal is not to make communities anti-tech. The goal is to end the tradition of asking them to absorb uncertainty for free.
+          </p>
+          <p>
+            The smartest version of this is a dual system: the paper agreement defines obligations, while a public-facing governance layer tracks whether those obligations are being met. That means numbers, review dates, escalation triggers, and plain language people can actually understand.
+          </p>
+        </article>
+
+        <article class="essay glass reveal" id="exit">
+          <div class="section-label">Exit liability</div>
+          <h3>The phase nobody wants to talk about: leaving</h3>
+          <p>
+            Decommissioning is where the romance disappears and the seriousness begins. Hard drives need certified destruction. Power systems need removal. Cooling systems need dismantling. Sites need remediation. If a company changes strategy, consolidates operations, or sells assets, the community should not become the unpaid custodian of a highly specialized industrial shell.
+          </p>
+          <p>
+            That is why decommissioning bonds matter. They turn future promises into present protection. If the operator leaves, the money for teardown, cleanup, and site handback is already there.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="table-card glass reveal">
+        <table>
+          <thead>
+            <tr>
+              <th>Lifecycle phase</th>
+              <th>What happens</th>
+              <th>What the community should require</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pre-planning</td>
+              <td>Inventory, risk mapping, chain-of-custody design</td>
+              <td>Approved decommissioning plan and updated bond schedule</td>
+            </tr>
+            <tr>
+              <td>Data destruction</td>
+              <td>Certified media shredding and reconciliation</td>
+              <td>Documented destruction certificates and third-party verification</td>
+            </tr>
+            <tr>
+              <td>Infrastructure removal</td>
+              <td>Racks, cabling, power systems, cooling equipment</td>
+              <td>Asset disposition reports and environmental safeguards</td>
+            </tr>
+            <tr>
+              <td>Site handback</td>
+              <td>Cleanup, restoration, remediation</td>
+              <td>Site readiness signoff and liability closure process</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="neighbors">
+      <div class="section-head reveal">
+        <div class="section-label">For the neighbors</div>
+        <h2>Say it plainly enough for the kitchen table, but sharp enough for the record.</h2>
+      </div>
+
+      <div class="split">
+        <article class="feature glass reveal">
+          <h3>A public-facing statement</h3>
+          <p>
+            These facilities power the digital services people use every day, but their costs are intensely local. So the fair version of this story is not “be grateful.” The fair version is this: if a company wants local land, local power, local water, local roads, and local patience, then the agreement should guarantee local benefit, hard environmental standards, and a funded plan for what happens if the company leaves.
+          </p>
+        </article>
+
+        <article class="feature glass reveal">
+          <h3>Movement language</h3>
+          <p>Host the future, share the value.</p>
+          <p style="margin-top:10px;">This is not about stopping progress. It is about pricing it honestly.</p>
+          <p style="margin-top:10px;">The cloud is not abstract when it shows up in a zoning meeting.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="sources">
+      <div class="section-head reveal">
+        <div class="section-label">Sources</div>
+        <h2>The receipts.</h2>
+      </div>
+
+      <div class="sources glass reveal">
+        <ol>
+          <li><a href="https://www.brookings.edu/articles/why-community-benefit-agreements-are-necessary-for-data-centers/" target="_blank" rel="noopener noreferrer">Brookings — Why community benefit agreements are necessary for data centers</a></li>
+          <li><a href="https://www.washingtonpost.com/business/2026/04/15/data-centers-poll-virginia/" target="_blank" rel="noopener noreferrer">The Washington Post — In this U.S. hot spot for data centers, voters have turned against them</a></li>
+          <li><a href="https://jlarc.virginia.gov/landing-2024-data-centers-in-virginia.asp" target="_blank" rel="noopener noreferrer">JLARC — Data Centers in Virginia</a></li>
+          <li><a href="https://www.smartcitiesdive.com/news/data-centers-city-oversight-Port-City-Washington-referendum/817703/" target="_blank" rel="noopener noreferrer">Smart Cities Dive — How much power do cities have over data centers?</a></li>
+        </ol>
+      </div>
+    </section>
+
+    <footer class="footer reveal">
+      The Hart Protocol · Infrastructure, Equity & Local Return · conceived, written, and shaped by Bart Salazar.
+    </footer>
+  </main>
+
+  <script>
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!reducedMotion && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+    }
+  </script>
+</body>
+</html>
